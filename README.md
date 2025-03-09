@@ -3,13 +3,15 @@
 This guide will explain how to host a dedicated server for Half-Life 2: Deathmatch on the following platforms:
 - [Windows](#Windows)
 - [Linux](#Linux)
-- [Docker](#Docker)
+- [Docker Linux](#docker-linux)
+- [Docker Desktop Windows](#docker-desktop-windows)
 
 *Docker is, in my opinion, the easiest way to host and manage your server for long term use, docker doesn't use a lot of resources, is easy to interact with and the server is easy to manage.*
 
-**Following this, the guide will explain how to [configure](#configuration) your server, configure [FastDL](https://developer.valvesoftware.com/wiki/FastDL) and install addons such as [Metamod](https://www.metamodsource.net/) and [Sourcemod](https://www.sourcemod.net/) with [plugins](#plugins).**
+**Following this, the guide will explain how to [port forward](#port-forwarding) and [configure](#configuration) your server, configure [FastDL](https://developer.valvesoftware.com/wiki/FastDL) and install addons such as [Metamod](https://www.metamodsource.net/) and [Sourcemod](https://www.sourcemod.net/) with [plugins](#plugins).**
 
 Post installation or if you already have the server installed, use the following links to configure your server further. 
+- [Port Forwarding](#port-forwarding)
 - [Configuration](#configuration)
 - [FastDL](#fastdl)
 - [Addons](#addons)
@@ -17,12 +19,12 @@ Post installation or if you already have the server installed, use the following
 	- [Sourcemod](https://www.sourcemod.net/)
 - [Plugins](#plugins)
 
-## **Windows**
+# **Windows**
 
-### **Step 1: Setting up your folder structure.**
+## **Step 1: Setting up your folder structure.**
 For the installation of the server we're going to need a folder for [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD) and a folder for the server itself, take the following as an example:
 ```
-Half-Life 2: Deathmatch Dedicated Server/
+Half-Life 2 Deathmatch Dedicated Server/
 │
 ├── steamcmd/
 │
@@ -30,11 +32,11 @@ Half-Life 2: Deathmatch Dedicated Server/
 ```
 In this example, the Half-Life 2: Deathmatch dedicated server will be installed into the `server` folder and steamCMD, which is used to download the server, will be installed into `steamcmd`. It is up to you where you want to place these folders. 
 
-### **Step 2: Downloading SteamCMD.**
+## **Step 2: Downloading SteamCMD.**
 The next step is to download SteamCMD, a download link for Windows can be found [here](https://developer.valvesoftware.com/wiki/SteamCMD#Windows), **make sure you download the one under Windows, the file is called steamcmd.zip .**
 Afterwards, unzip this file and put all of its content in the `server` folder, it should now look like this:
 ```
-Half-Life 2: Deathmatch Dedicated Server/
+Half-Life 2 Deathmatch Dedicated Server/
 │
 ├── steamcmd/
 │   └── steamcmd.exe
@@ -42,7 +44,7 @@ Half-Life 2: Deathmatch Dedicated Server/
 └── server/
 ```
 
-### **Step 3: Running SteamCMD.**
+## **Step 3: Running SteamCMD.**
 After downloading, we can double click on steamcmd.exe to run it, following this, a terminal window will open which returns the following output:
 
 ```
@@ -52,18 +54,18 @@ After downloading, we can double click on steamcmd.exe to run it, following this
 ```
 After it has downloaded updates, checked for updates and verified the installation we can continue.
 
-### **Step 4: SteamCMD setting installation path.**
+## **Step 4: SteamCMD setting installation path.**
 Before logging into SteamCMD we must first set the location for the dedicated server to be downloaded and installed to, note that for this we have to use the absolute path.
 
 `force_install_dir path\to\your\server\`
 
 For example, installing the server onto your D drive would be: 
 
-`force_install_dir D:\Half-Life 2: Deathmatch Dedicated Server\server\`
+`force_install_dir D:\Half-Life 2 Deathmatch Dedicated Server\server\`
 
 When setting this on Windows make sure to use the back slash `\` instead of the forward slash `/`.
 
-### **Step 5: Logging in anonymously.**
+## **Step 5: Logging in anonymously.**
 The next step is to run steamcmd.exe by double clicking on it, this should launch a terminal window running SteamCMD. SteamCMD should update itself if necessary and it should end up with a prompt in which you can type commands. 
 We can use the anonymous login feature to download the dedicated server as we don't need to make a purchase to download it, the command to login anonymously is:
 
@@ -75,7 +77,7 @@ Connecting anonymously to Steam Public...OK
 Waiting for client config...OK.
 Waiting for user info...OK
 ```
-### **Step 6: Downloading the dedicated server.**
+## **Step 6: Downloading the dedicated server.**
 Now that we are logged in and the installation directory is set we can download the dedicated server, to do this we use the following command:
 
 `app_update 232370 validate`
@@ -83,7 +85,7 @@ Now that we are logged in and the installation directory is set we can download 
 `app_update` will download appid `232370` (Half-Life 2: Deathmatch Dedicated Server) and `validate` the files after downloading.
 When the download is complete you may close SteamCMD and your server directory should be populated with files like so:
 ```
-Half-Life 2: Deathmatch Dedicated Server/
+Half-Life 2 Deathmatch Dedicated Server/
 │
 ├── steamcmd/
 │   ├── steamcmd.exe
@@ -122,12 +124,12 @@ Note: the progress is shown here in % and bytes. Following the download, it will
 ```
 When finished, it will tell us `Success! App '232370' fully installed.`
 
-### **Step 7: Running the dedicated server**
+## **Step 7: Running the dedicated server**
 Inside the server directory there should be a file called srcds.exe which will be used to run the server, to do this we make a .bat file to easily run the server and set parameters. The easiest way to do this is to create text file, enter the following command in this file and then save it as .bat instead of a .txt file.  
 ```
 srcds.exe -console -game hl2mp -maxplayers 10 +map dm_lockdown
 ```
-Optionally you can omit `-console` to run the server using a graphical interface. The `-exec` parameter is used to execute a .cfg (configuration) file, in this case we execute server.cfg which contains the settings for the server such as the hostname and the password. Running the bat file will start the server, we can see that the server is started when the server window tells us:
+Optionally you can omit `-console` to run the server using a graphical interface. Running the bat file will start the server, we can see that the server is started when the server window tells us:
 ```
 Connection to Steam servers successful.
    Public IP to Steam is xxx.xxx.xxx.xxx
@@ -136,9 +138,9 @@ VAC secure mode is activated.
 ```
 **AT THIS POINT YOUR SERVER IS RUNNING, BUT FOR OTHERS TO BE ABLE TO JOIN IT YOU WILL NEED TO [PORT FORWARD](portforward) AND DO BASIC [CONFIGURATION](configuration)**
 
-## Linux
+# Linux
 
-### **Step 1: installing prerequisites.**
+## **Step 1: installing prerequisites.**
 Modern versions of Linux allow you to install SteamCMD directtly from your package manager, for example on my test setup ruinning Pop OS, i can use the command:
 ```
 sudo apt install steamcmd
@@ -161,14 +163,14 @@ Do you want to continue? [Y/n]
 ```
 After this we can type y and press enter to start the installation. If your package manager and or package repository does not include SteamCMD you might have to manually install the dependencies and manually download the package, how this is done is described [here](https://developer.valvesoftware.com/wiki/SteamCMD#Linux).
 
-### **Step 2: Creating a user for SteamCMD.**
+## **Step 2: Creating a user for SteamCMD.**
 Running the server under the `root` user is a *bad idea* and a *scurity risk*, most distributions force you to make a user account which should be used to run the server instead, if you do not have a user account, make one like so:
 ```
 sudo useradd -m newusername
 sudo passwd newusername
 ```
 
-### **Step 3: Setting up your folder structure.**
+## **Step 3: Setting up your folder structure.**
 Since we've downloaded SteamCMD (if possible) from the repositories we will not need to make a folder for SteamCMD. We will still need to make a folder for the server to be installed to, take the following as an example:
 ```
 /home/username/hl2dm-ds/
@@ -183,7 +185,7 @@ cd hl2dm-ds
 mkdir server
 ```
 
-### **Step 4: Running SteamCMD.**
+## **Step 4: Running SteamCMD.**
 After installing SteamCMD and sertting up the folder structure, we can run SteamCMD with the following command:
 `steamcmd`
 Following this the prompt should return something like this:
@@ -194,7 +196,7 @@ Following this the prompt should return something like this:
 ```
 After it has downloaded updates, checked for updates and verified the installation we can continue.
 
-### **Step 5: Setting your installation directory.**
+## **Step 5: Setting your installation directory.**
 Before logging into SteamCMD we must first set the location for the dedicated server to be downloaded and installed to, note that for this we have to use the absolute path.
 
 `force_install_dir /path/to/your/server`
@@ -205,7 +207,7 @@ For example, installing the server into your home folder (recommended, permissio
 
 When setting this on Linux make sure to use the forward slash `/` instead of the back slash `\`.
 
-### **Step 6: Logging in anonymously.**
+## **Step 6: Logging in anonymously.**
 The next step is to login to SteamCMD using an anonymous account as we do not need to purchase HL2:DM or anything to be able to download the server, to login, use the following command:
 
 `login anonymous`
@@ -217,7 +219,7 @@ Waiting for client config...OK.
 Waiting for user info...OK
 ```
 
-### **Step 7: Downloading the dedicated server.**
+## **Step 7: Downloading the dedicated server.**
 Now that we are logged in and the installation directory is set we can download the dedicated server, to do this we use the following command:
 
 `app_update 232370 validate`
@@ -256,7 +258,7 @@ Note: the progress is shown here in % and bytes. Following the download, it will
 ```
 When finished, it will tell us `Success! App '232370' fully installed.`. To close SteamCMD we can use the command `exit`.
 
-### **Step 8: Running the dedicated server**
+## **Step 8: Running the dedicated server**
 Inside the server directory there should be a file called srcds_run which we will use to run the server, to run the server from the command line we can use the following command:
 ```
 ./srcds_run -game hl2mp -maxplayers 10 +map dm_lockdown
@@ -270,7 +272,7 @@ VAC secure mode is activated.
 ```
 **AT THIS POINT YOUR SERVER IS RUNNING, BUT FOR OTHERS TO BE ABLE TO JOIN IT YOU WILL NEED TO [PORT FORWARD](portforward) AND DO BASIC [CONFIGURATION](configuration)**
 
-## Docker
+# Docker (Linux)
 
 A docker application is a quick and easy way of deploying an image to do one thing; run a Half-Life 2: Deathmatch Dedicated Server server.
 
@@ -278,7 +280,7 @@ Certain operating systems such as [Unraid](https://unraid.net/) and or [TrueNAS 
 
 A docker container/ application can also be ran on Linux itself and is not difficult to set up, the following steps will explain:
 
-### **Step 1: Installing docker.**
+## **Step 1: Installing docker.**
 Unlike SteamCMD, Docker cannot be installed from most repositories as far as i know and has to be added, we can do this using the following commands:
 
 First, login as root:
@@ -322,7 +324,7 @@ Which should return:
 
 The version will be different for you most likely.
 
-### **Step 2: Setting up the folder structures.**
+## **Step 2: Setting up the folder structures.**
 We will need to set up 2 folder structures for the Dedicated Server, 1 for the Linux operating system and 1 inside the Docker container, on the Linux system we want the folder structure like this:
 ```
 /home/USERNAME/dockerdata
@@ -339,7 +341,7 @@ In this case, on the Linux machine itself we have the `server` and `steamcmd` fo
 ```
 These folders don't need to be created as they are created for us when setting up the Docker container.
 
-### **Step 3: Setting up the Docker container.**
+## **Step 3: Setting up the Docker container.**
 First we login as root:
 
 `sudo su`
@@ -380,7 +382,7 @@ Status: Downloaded newer image for ich777/steamcmd:latest
 ```
 Here we can see it has pulled all the required data to set up the docker container and we can see our container ID which is the very last line, in this case: `4dde2e97d806e76f9da60fe3cb153c5621b47013f9538572042d3225dde23f6f`, this ID is important as we will be able to identify our Docker container with this. 
 
-### **Step 4: Reading the logs, interacting with docker and other useful commands.**
+## **Step 4: Reading the logs, interacting with docker and other useful commands.**
 We can see what the container is doing by reading the log, after the container has been created it will start by itself and start downloading the dedicated server, after this it will start the srver. To list our containers we can use the following command:
 
 `docker ps -a `
@@ -486,3 +488,16 @@ And we can stop the container using this command:
 `docker stop CONTAINER ID`
 
 **AT THIS POINT YOUR SERVER IS RUNNING, BUT FOR OTHERS TO BE ABLE TO JOIN IT YOU WILL NEED TO [PORT FORWARD](portforward) AND DO BASIC [CONFIGURATION](configuration)**
+
+# Docker Desktop (Windows)
+
+## **Step 1: Installing and running:**
+[Docker Desktop](https://www.docker.com/products/docker-desktop/) is an easy way of running Docker containers on Windows, to do this, simply go on their website and download Docker desktop (it's free). After downloading and installing Docker desktop let it install and or update certain [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) components. After all of this is done, open Docker desktop and click on the `>_ Terminal` button in the bottom right and enable it, then in the terminal enter the following command:
+ ```
+docker run --name hl2dm-ds -d -p 27015:27015 -p 27015:27015/udp --env 'GAME_ID=232370' --env 'GAME_NAME=hl2mp' --env 'GAME_PORT=27015' --env 'GAME_PARAMS=+maxplayers 24 +map dm_lockdown' --env 'UID=99' --env 'GID=100' --volume C:\Half-Life 2 Deathmatch Dedicated Server\steamcmd:/serverdata/steamcmd --volume C:\Half-Life 2 Deathmatch Dedicated Server\server:/serverdata/serverfiles ich777/steamcmd:hl2dm
+``` 
+After running this, Docker desktop should start to pull the image as it is not locally stored and start the container. On the top left side there should be a "Containers" section, clicking on this we should see our container named "hl2dm-ds", double clicking on this opens the log and we can see what the container is doing. We can see in the command that we have mounted the Windows path `C:\Half-Life 2 Deathmatch Dedicated Server` to be used for our server files which will contain the `steamcmd` and `serverfiles` contents.
+
+**AT THIS POINT YOUR SERVER IS RUNNING, BUT FOR OTHERS TO BE ABLE TO JOIN IT YOU WILL NEED TO [PORT FORWARD](portforward) AND DO BASIC [CONFIGURATION](configuration)**
+
+##
