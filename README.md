@@ -546,3 +546,139 @@ Private Port: 27015 - 27015
 Public Port: 27015 - 27015
 ```
 After doing this, start your server and it should now be joinable from the server list but, we haven't changed configuration yet which is required for changing the name of the server and optionally setting a password, without changing the name it will be very difficult to find your server in the list. 
+
+## Configuration. 
+Server configuration is mostly stored in the `server.cfg` file, this configuration file contains a list of commands that the server executes when it starts up and is ran every time the server starts.
+
+## **Step 1: Server configuration.**
+The `server.cfg` file exists in `hl2mp/cfg/server.cfg`, if it's not there, you can create it yourself and add the following text:
+```
+// Basic server settings
+// Name of the server
+hostname "My Half-Life 2 DM Server"
+
+// Set a password for the server if required (leave blank for no password)
+sv_password ""
+
+// Remote console password (change it to something secure)
+rcon_password "your_rcon_password"
+
+// Set to 1 to allow cheats (set to 0 to disable)
+sv_cheats 0
+
+// Set to 1 for LAN-only play, set to 0 for internet play
+sv_lan 0
+
+// Server contact email (optional)
+sv_contact "your_email@example.com"
+
+// Region 0 for worldwide, change it depending on your location (use Steam region numbers)
+sv_region 0
+
+// Disable auto-kick (0 = enabled, 1 = disabled)
+mp_disable_autokick 0
+
+// Gameplay settings
+// Weapon respawn time in seconds
+sv_hl2mp_weapon_respawn_time 20
+
+// Item respawn time in seconds
+sv_hl2mp_item_respawn_time 30
+
+// set to 1 if weapons stay (immediate pickup by players without weapons)
+// requires that there be additional ammo (can't pick up a weapon to get more ammo)
+mp_weaponstay 0
+
+// enable autocrosshair (default is 1)
+mp_autocrosshair 1
+
+// teamplay talk all (1) or team only (0)
+sv_alltalk 1
+
+//toggles whether the server allows spectator mode or not
+mp_allowspectators 1
+
+// enable voice on server
+sv_voiceenable 1
+
+// set to force players to respawn after death
+mp_forcerespawn 1
+
+// Time limit per map (in minutes)
+mp_timelimit 20
+
+// Round time limit (in minutes)
+mp_roundtime 3
+
+// Set the win limit (0 = unlimited)
+mp_winlimit 0
+
+// Max rounds per map (0 = unlimited)
+mp_maxrounds 0
+
+// Allows a team to be unbalanced by this number of players
+mp_teams_unbalance_limit 0
+
+// Set to 1 to allow friendly fire, 0 to disable
+mp_friendlyfire 0
+
+// Enable or disable flashlight (1 = enabled, 0 = disabled)
+mp_flashlight 1
+
+// Enable or disable automatic team balancing (1 = enabled)
+mp_autoteambalance 0
+
+// Automatically kicks idle players
+mp_autokick 0
+
+// Restarts the game when round ends
+mp_restartgame 1
+
+// Automatically restarts the game at the end of each match
+mp_match_end_restart 1
+
+// Allow monsters (set to 0 for deathmatch)
+mp_allowmonsters 0
+
+// Forces auto-kicking when players are idle
+mp_forceautokick 0
+
+// Player settings
+// Time before a player is kicked for not responding (in seconds)
+sv_timeout 60
+
+// Set the acceleration while noclipping
+sv_noclipaccelerate 5
+
+// Set the speed while noclipping
+sv_noclipspeed 5
+
+// Miscellaneous settings
+// URL for fast download (leave empty or specify URL)
+sv_downloadurl ""
+
+// Forces all players to have a 3rd-person view (1 = enabled)
+mp_forcecamera 1
+
+// Map rotation
+// Map rotation file (make sure to configure it in a separate file)
+mapcyclefile "mapcycle.txt"
+
+// Server security settings
+// Allow clients to upload custom files (set to 0 to disable)
+sv_allowupload 1
+
+// Allow clients to download custom files (set to 0 to disable)
+sv_allowdownload 1
+
+// Time (in minutes) a player is banned after a failed rcon attempt
+sv_rcon_banpenalty 10
+
+// Number of failed rcon attempts before banning
+sv_rcon_maxfailures 5
+
+// Map-related settings
+// Time for players to chat after the game ends (in seconds)
+mp_chattime 5
+``` 
+Feel free to change any of these settings as you like, most importantly, probably, would be `hostname`, set this to something that represents your server, make it unique so you and any other player can easily find your server. Aside from this there are a lot more commands that can be used to alter server configuration, a list of convars can be found [here](https://developer.valvesoftware.com/wiki/List_of_Half-Life_2_console_commands_and_variables).
