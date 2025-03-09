@@ -500,4 +500,49 @@ After running this, Docker desktop should start to pull the image as it is not l
 
 **AT THIS POINT YOUR SERVER IS RUNNING, BUT FOR OTHERS TO BE ABLE TO JOIN IT YOU WILL NEED TO [PORT FORWARD](portforward) AND DO BASIC [CONFIGURATION](configuration)**
 
-##
+# Port forwarding
+Port forwarding is required for to be done for others to be able to join your server from the internet, without port forwarding your server will **not show up in the server list** and people who are not on the same network as you are will **not be able to join**. Port forwarding is different for each and every set up, this guide will assume you're hosting a dedicated server from a home network and that you are using a home router and or firewall, if you're paying for a VSP or another server space you will have to figure out with them how to open ports to allow for game traffic from the internet. 
+
+## **Step 1: Finding your router IP adres.**
+To find our router's IP adres on windows we can open the command prompt and use the following command:
+
+`ipconfig`
+
+Which will return:
+
+```
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . : home
+   IPv4 Address. . . . . . . . . . . : xxx.xxx.xxx.xxx
+   Subnet Mask . . . . . . . . . . . : xxx.xxx.xxx.xxx
+   Default Gateway . . . . . . . . . : 192.168.1.1
+```
+In this example, my default gateway which is my router, has the IP adres `192.168.1.1`. To do this on Linux we can use the following command:
+
+`netstat -rn`
+
+Which will return:
+
+```
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG        0 0          0 ens2
+192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 ens2
+```
+
+In this case we can see that our router's IP adres (gateway) is `192.168.1.1`
+
+## **Step 2: Logging into your router's web interface and opening your port.**
+Open a web browser and enter the your gateway's IP adres, this should give you a login page to enter your router's web login. The password for this web login is usually found on the bottom of your router and is not the same as the Wi-Fi password.
+
+After logging in we must find the port forwarding options, for me they can be found under `Network > NAT > Port mapping`. Next step is to add a port mapping/ port forwarding rule, the IP adres to use for this rule is th IP adres of the computer that your server is hosted on, for example this could be `192.168.1.10`, next we must set the port to 27015 (or whatever port you're using) and the protocol to UDP/TCP (both). An example port forwarding rule may look something like this:
+
+```
+Enable this rule: ☒
+IP: 192.168.1.10
+Protocol: TCP/UDP
+Private Port: 27015 - 27015
+Public Port: 27015 - 27015
+```
+After doing this, start your server and it should now be joinable from the server list but, we haven't changed configuration yet which is required for changing the name of the server and optionally setting a password, without changing the name it will be very difficult to find your server in the list. 
